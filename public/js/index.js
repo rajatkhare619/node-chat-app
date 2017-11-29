@@ -5,10 +5,6 @@ let socket = io();
 socket.on('connect', function() {
     console.log("connected to server");
 
-    socket.emit('createMessage', {
-       text: "create rajat from client"
-    });
-
     socket.on('newMessage', function (newMessage) {
         console.log("new message from server", newMessage);
     });
