@@ -10,14 +10,21 @@ let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 
- app.use(express.static(publicPath));
+app.use(express.static(publicPath));
 
- io.on('connection', (socket) => {
-     console.log(socket);
-     socket.on('disconnect', () => {
-         console.log("client disconnected");
-     });
- });
+io.on('connection', (socket) => {
+    socket.emit('newMessage', {
+        text: "new message from server"
+    });
+
+    socket.on('createMessage', (newMessage) => {
+        console.log("newMessage event", newMessage);
+    });
+
+    socket.on('disconnect', () => {
+        console.log("client disconnected");
+    });
+});
 server.listen(port, () => {
     console.log("server running on port", port);
 });
