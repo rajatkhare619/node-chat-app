@@ -8,21 +8,36 @@ socket.on('connect', function() {
     socket.on('newMessage', function (newMessage) {
         console.log("new message from server", newMessage);
         let formattedTime = moment(newMessage.createdAt).format('h:mm a');
+        let template = $('#message-template').html();
+        let html = Mustache.render(template, {
+            text: newMessage.text,
+            from: newMessage.from,
+            createdAt: formattedTime
+        });
+        $('#messages').append(html);
+        /*let formattedTime = moment(newMessage.createdAt).format('h:mm a');
         let li = $('<li></li>');
         li.text(`${newMessage.from} ${formattedTime}: ${newMessage.text}`)
-        $('#messages').append(li);
+        $('#messages').append(li);*/
     });
 });
 
 socket.on('newLocationMessage', function (message) {
     let formattedTime = moment(message.createdAt).format('h:mm a');
-    let li = $('<li></li>');
+    let template = $('#location-message-template').html();
+    let html = Mustache.render(template, {
+        from: message.from,
+        url: message.url,
+        createdAt: formattedTime,
+    });
+    $('#messages').append(html);
+   /* let li = $('<li></li>');
     let a = $('<a target="_blank">current location</a>');
 
     li.text(`${message.from} ${formattedTime}: `);
     a.attr('href',  message.url);
     li.append(a);
-    $('#messages').append(li);
+    $('#messages').append(li);*/
 });
 
 socket.on('disconnect', function() {
