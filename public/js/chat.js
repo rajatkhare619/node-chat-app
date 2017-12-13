@@ -80,8 +80,7 @@ $('#message-form').on('submit', function (event) {
     event.preventDefault();
     let messageTextbox = $('[name=message]');
     socket.emit('createMessage', {
-        from: "user",
-        text: messageTextbox.val()
+         text: messageTextbox.val()
     }, function () {
         messageTextbox.val('');
         console.log("form acknowledged");
